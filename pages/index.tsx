@@ -56,7 +56,7 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
    */
   const oldCardBorrow = () => {
     setLogs((prev) => [
-      `${getTime()}に${selectMember}が旧カードを借りる`,
+      `${getTime()}秒に${selectMember}が旧カードを借りる`,
       ...prev,
     ]);
     setOldCard(true);
@@ -67,7 +67,7 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
    */
   const oldCardReturn = () => {
     setLogs((prev) => [
-      `${getTime()}に${selectMember}が旧カードを返却`,
+      `${getTime()}秒に${selectMember}が旧カードを返却`,
       ...prev,
     ]);
     setOldCard(false);
@@ -78,7 +78,7 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
    */
   const tarouCardBorrow = () => {
     setLogs((prev) => [
-      `${getTime()}に${selectMember}が太郎カードを借りる`,
+      `${getTime()}秒に${selectMember}が太郎カードを借りる`,
       ...prev,
     ]);
     tarouOldCard(true);
@@ -89,7 +89,7 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
    */
   const tarouCardReturn = () => {
     setLogs((prev) => [
-      `${getTime()}に${selectMember}が太郎カードを返却`,
+      `${getTime()}秒に${selectMember}が太郎カードを返却`,
       ...prev,
     ]);
     tarouOldCard(false);
@@ -107,6 +107,7 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
               1.自分の名前をクリックして選択している人に名前が出ていることを確認
             </RuleLi>
             <RuleLi>2.対象カードの借りるor返却ボタンをクリック</RuleLi>
+            <RuleLi>3.3階でタバコを吸いましょう🚬</RuleLi>
           </ul>
         </Rule>
         {members.map((member) => {
@@ -269,4 +270,6 @@ const Log = styled.div`
   overflow: scroll;
   border: solid black 1px;
   background-color: #f5f5f5;
+  padding-left: 20px;
+  padding-right: 10px;
 `;
