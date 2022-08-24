@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import styled from "styled-components";
 
 const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const members: string[] = [
@@ -8,7 +9,7 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     "神和昇",
     "増渕裕介",
     "山田太郎",
-    "園部美奈",
+    "薗部美奈",
     "宮島梨乃",
     "寺田誠也",
     "佐藤啓道",
@@ -55,8 +56,8 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
    */
   const oldCardBorrow = () => {
     setLogs((prev) => [
+      `${getTime()}秒に${selectMember}が旧カードを借りる`,
       ...prev,
-      `${getTime()}に${selectMember}が旧カードを借りる`,
     ]);
     setOldCard(true);
     setSelectMember(null);
@@ -66,8 +67,8 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
    */
   const oldCardReturn = () => {
     setLogs((prev) => [
+      `${getTime()}秒に${selectMember}が旧カードを返却`,
       ...prev,
-      `${getTime()}に${selectMember}が旧カードを返却`,
     ]);
     setOldCard(false);
     setSelectMember(null);
@@ -77,8 +78,8 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
    */
   const tarouCardBorrow = () => {
     setLogs((prev) => [
+      `${getTime()}秒に${selectMember}が太郎カードを借りる`,
       ...prev,
-      `${getTime()}に${selectMember}が太郎カードを借りる`,
     ]);
     tarouOldCard(true);
     setSelectMember(null);
@@ -88,84 +89,85 @@ const Top = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
    */
   const tarouCardReturn = () => {
     setLogs((prev) => [
+      `${getTime()}秒に${selectMember}が太郎カードを返却`,
       ...prev,
-      `${getTime()}に${selectMember}が太郎カードを返却`,
     ]);
     tarouOldCard(false);
     setSelectMember(null);
   };
 
   return (
-    <>
-      <header>鍵はしっかり返しましょう</header>
+    <Main>
+      <Header>鍵はしっかり返しましょう</Header>
       <div id="body">
-        <div>
-          <p>ルール</p>
+        <Rule>
+          <TitleRule>ルール</TitleRule>
           <ul>
-            <li>
-              自分の名前をクリックして選択している人に名前が出ていることを確認
-            </li>
-            <li>対象カードの借りるor返却ボタンをクリック</li>
+            <RuleLi>
+              1.自分の名前をクリックして選択している人に名前が出ていることを確認
+            </RuleLi>
+            <RuleLi>2.対象カードの借りるor返却ボタンをクリック</RuleLi>
+            <RuleLi>3.3階でタバコを吸いましょう🚬</RuleLi>
           </ul>
-        </div>
+        </Rule>
         {members.map((member) => {
           return (
-            <button key={member} onClick={() => selectedMember(member)}>
+            <MemberButton key={member} onClick={() => selectedMember(member)}>
               {member}
-            </button>
+            </MemberButton>
           );
         })}
-        <div>
-          <p>選択している人</p>
-          <div>{selectMember}</div>
-        </div>
-        <div>
-          <div>
-            <p>旧カード</p>
+        <SelectedMember>
+          <TitleMember>選択している人</TitleMember>
+          <SelectedName>{selectMember}</SelectedName>
+        </SelectedMember>
+        <CardArea>
+          <OldCardArea>
+            <TitleOldCard>旧カード</TitleOldCard>
             <div>
-              <button
+              <OldCardBorrowButton
                 disabled={selectMember === null || oldCard === true}
                 onClick={oldCardBorrow}
               >
                 借りる
-              </button>
-              <button
+              </OldCardBorrowButton>
+              <OldCardReturnButton
                 disabled={selectMember === null || oldCard === false}
                 onClick={oldCardReturn}
               >
                 返却
-              </button>
+              </OldCardReturnButton>
             </div>
-          </div>
-          <div>
-            <p>太郎カード</p>
+          </OldCardArea>
+          <TarouCardArea>
+            <TitleTarouCard>太郎カード</TitleTarouCard>
             <div>
-              <button
+              <TarouCardBorrowButton
                 disabled={selectMember === null || tarouCard === true}
                 onClick={tarouCardBorrow}
               >
                 借りる
-              </button>
-              <button
+              </TarouCardBorrowButton>
+              <TarouCardReturnButton
                 disabled={selectMember === null || tarouCard === false}
                 onClick={tarouCardReturn}
               >
                 返却
-              </button>
+              </TarouCardReturnButton>
             </div>
-          </div>
-        </div>
+          </TarouCardArea>
+        </CardArea>
       </div>
-      <div>
-        <p>貸し出しログ</p>
-        <div>
+      <LogArea>
+        <TitleLog>貸し出しログ</TitleLog>
+        <Log>
           {logs.map((log) => {
             return <p key={log}>{log}</p>;
           })}
-        </div>
-      </div>
+        </Log>
+      </LogArea>
       <footer>2022 alchemy.inc</footer>
-    </>
+    </Main>
   );
 };
 
@@ -177,3 +179,97 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {},
   };
 };
+const Main = styled.div`
+  padding: 20px;
+`;
+const Header = styled.header`
+  text-align: center;
+  color: red;
+`;
+// ルール
+const Rule = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+const TitleRule = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+`;
+const RuleUL = styled.div``;
+const RuleLi = styled.div``;
+// メンバー
+const MemberButton = styled.button`
+  width: 200px;
+  height: 50px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+`;
+const SelectedMember = styled.div`
+  height: 50px;
+  margin-bottom: 10px;
+`;
+const TitleMember = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+`;
+const SelectedName = styled.div`
+  color: red;
+`;
+// カード
+const CardArea = styled.div`
+  display: flex;
+`;
+//　旧カード
+const OldCardArea = styled.div`
+  width: 100%;
+`;
+const TitleOldCard = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+`;
+const OldCardBorrowButton = styled.button`
+  width: 200px;
+  height: 50px;
+  margin-right: 10px;
+`;
+const OldCardReturnButton = styled.button`
+  width: 200px;
+  height: 50px;
+`;
+//　太郎カード
+const TarouCardArea = styled.div`
+  width: 100%;
+`;
+const TitleTarouCard = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+`;
+const TarouCardBorrowButton = styled.button`
+  width: 200px;
+  height: 50px;
+  margin-right: 10px;
+`;
+const TarouCardReturnButton = styled.button`
+  width: 200px;
+  height: 50px;
+`;
+
+//ログ
+const LogArea = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+const TitleLog = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+`;
+const Log = styled.div`
+  height: 300px;
+  overflow: scroll;
+  border: solid black 1px;
+  background-color: #f5f5f5;
+  padding-left: 20px;
+  padding-right: 10px;
+`;
